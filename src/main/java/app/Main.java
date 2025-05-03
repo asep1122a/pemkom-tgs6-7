@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.util.List;
 
 public class Main extends JFrame {
+
     private JTextField txtName;
     private JTextField txtPhoneNumber; // Mengubah txtEmail menjadi txtPhoneNumber
     private JButton btnAdd;

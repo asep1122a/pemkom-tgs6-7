@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
+
     private final MongoCollection<Document> collection;
 
     public CustomerService() {
