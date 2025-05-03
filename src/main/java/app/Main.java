@@ -1,7 +1,5 @@
 package app;
 
-
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -10,16 +8,15 @@ import java.util.List;
 
 public class Main extends JFrame {
     private JTextField txtName;
-    private JTextField txtEmail;
+    private JTextField txtPhoneNumber; // Mengubah txtEmail menjadi txtPhoneNumber
     private JButton btnAdd;
     private JButton btnDelete;
     private JTable table;
     private DefaultTableModel tableModel;
-    private cs dao;
-    
+    private CustomerService customerService; // Mengubah dao menjadi customerService
 
     public Main() {
-        dao = new cs();
+        customerService = new CustomerService();
         setTitle("Customer Manager");
         setSize(500, 400);
         setLocationRelativeTo(null);
@@ -34,9 +31,9 @@ public class Main extends JFrame {
         txtName = new JTextField();
         formPanel.add(txtName);
 
-        formPanel.add(new JLabel("Email:"));
-        txtEmail = new JTextField();
-        formPanel.add(txtEmail);
+        formPanel.add(new JLabel("Nomor HP:")); // Mengubah label menjadi Nomor HP
+        txtPhoneNumber = new JTextField(); // Mengubah txtEmail menjadi txtPhoneNumber
+        formPanel.add(txtPhoneNumber);
 
         btnAdd = new JButton("Tambah");
         formPanel.add(btnAdd);
@@ -47,7 +44,7 @@ public class Main extends JFrame {
         add(formPanel, BorderLayout.NORTH);
 
         // Table
-        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Email"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"ID", "Nama", "Nomor HP"}, 0); // Mengubah header tabel
         table = new JTable(tableModel);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -56,11 +53,11 @@ public class Main extends JFrame {
         // Actions
         btnAdd.addActionListener(e -> {
             String name = txtName.getText();
-            String email = txtEmail.getText();
-            if (!name.isEmpty() && !email.isEmpty()) {
-                dao.insertCustomer(new customer(name, email));
+            String phoneNumber = txtPhoneNumber.getText(); // Mengubah email menjadi phoneNumber
+            if (!name.isEmpty() && !phoneNumber.isEmpty()) {
+                customerService.addCustomer(new Customer(name, phoneNumber)); // Mengubah email menjadi phoneNumber
                 txtName.setText("");
-                txtEmail.setText("");
+                txtPhoneNumber.setText(""); // Mengubah email menjadi phoneNumber
                 loadTable();
             } else {
                 JOptionPane.showMessageDialog(this, "Isi semua field!");
@@ -71,7 +68,7 @@ public class Main extends JFrame {
             int selected = table.getSelectedRow();
             if (selected != -1) {
                 String id = table.getValueAt(selected, 0).toString();
-                dao.deleteCustomer(id);
+                customerService.removeCustomer(id); // Mengubah deleteCustomer menjadi removeCustomer
                 loadTable();
             } else {
                 JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus.");
@@ -81,9 +78,9 @@ public class Main extends JFrame {
 
     private void loadTable() {
         tableModel.setRowCount(0);
-        List<customer> customers = dao.getAllCustomers();
-        for (customer c : customers) {
-            tableModel.addRow(new Object[]{c.getId(), c.getName(), c.getEmail()});
+        List<Customer> customers = customerService.fetchAllCustomers(); // Mengubah getAllCustomers menjadi fetchAllCustomers
+        for (Customer c : customers) {
+            tableModel.addRow(new Object[]{c.getId(), c.getName(), c.getPhoneNumber()}); // Mengubah email menjadi phoneNumber
         }
     }
 
